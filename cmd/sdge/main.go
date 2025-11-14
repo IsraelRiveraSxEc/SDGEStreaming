@@ -2,7 +2,7 @@
    @autores: Nelson Espinosa, Barbara Peñaherrera
    @fecha: 15/11/2025
    @descripcion: Punto de entrada del sistema. Contiene el menú interactivo y la lógica de control principal que orquesta las interacciones con los módulos de usuarios y contenido. Utiliza programación funcional básica. */
-package main // Declara que este archivo pertenece al paquete main, el punto de entrada del programa.
+package main // Paquete principal del programa.
 
 // Importa los paquetes necesarios para el funcionamiento del programa.
 import (
@@ -16,90 +16,59 @@ import (
 )
 
 // Declara una variable global 'scanner' de tipo bufio.Scanner.
-// Esta variable se usará para leer líneas de texto desde la entrada estándar (stdin).
 var scanner = bufio.NewScanner(os.Stdin)
 
-// Variable global para simular un usuario "logueado". Inicialmente vacía.
-// Esta variable almacena el nombre del usuario que inició sesión.
+// Variable global para simular un usuario logueado.
 var usuarioActual string = ""
 
 // Función principal del programa. Es el punto de entrada cuando se ejecuta el binario.
 func main() {
-	// Imprime un mensaje de bienvenida al iniciar el programa.
 	fmt.Println("--- Bienvenido al Sistema de Gestión de Streaming (SDGEStreaming) ---")
 
-	// Inicia un bucle infinito para mantener el menú activo hasta que el usuario elija salir.
 	for {
-		// Verifica si hay un usuario actualmente logueado.
-		// Si no hay usuario logueado, se muestra el menú de inicio (Iniciar sesión, Registrarse).
 		if usuarioActual == "" {
-			// Llama a la función para mostrar el menú de inicio.
 			mostrarMenuInicio()
-			// Llama a la función para leer la opción elegida por el usuario en el menú de inicio.
 			opcion := leerOpcion()
-			// Llama a la función para ejecutar la acción correspondiente a la opción elegida en el menú de inicio.
 			ejecutarOpcionInicio(opcion)
 		} else {
-			// Si hay un usuario logueado, se muestra el menú principal personalizado.
-			// Llama a la función para mostrar el menú principal.
 			mostrarMenuPrincipal()
-			// Llama a la función para leer la opción elegida por el usuario en el menú principal.
 			opcion := leerOpcion()
-			// Llama a la función para ejecutar la acción correspondiente a la opción elegida en el menú principal.
 			ejecutarOpcionPrincipal(opcion)
 		}
 	}
 }
 
-// Función que imprime las opciones del menú de inicio (antes de iniciar sesión).
+// Función que imprime las opciones del menú de inicio.
 func mostrarMenuInicio() {
-	// Imprime un encabezado para el menú de inicio.
 	fmt.Println("\n--- Bienvenido a SDGEStreaming ---")
-	// Imprime las opciones del menú de inicio.
 	fmt.Println("1. Iniciar Sesión")
 	fmt.Println("2. Registrarse")
 	fmt.Println("3. Explorar Contenido (Invitado)")
 	fmt.Println("4. Salir")
-	// Solicita al usuario que seleccione una opción.
 	fmt.Print("Seleccione una opción: ")
 }
 
 // Función que maneja las opciones del menú de inicio.
 func ejecutarOpcionInicio(opcion int) {
-	// Utiliza una sentencia switch para evaluar el valor de 'opcion'.
 	switch opcion {
-	// Caso 1: Iniciar Sesión.
 	case 1:
-		// Llama a la función para manejar el inicio de sesión.
 		iniciarSesion()
-	// Caso 2: Registrarse.
 	case 2:
-		// Llama a la función para manejar el registro de un nuevo usuario.
 		registrarse()
-	// Caso 3: Explorar Contenido como invitado.
 	case 3:
-		// Imprime un mensaje indicando que se está explorando como invitado.
 		fmt.Println("Explorando como invitado. Algunas funciones están limitadas.")
-		// Llama a la función para explorar contenido (limitado para invitados).
 		explorarContenido()
-	// Caso 4: Salir del sistema.
 	case 4:
-		// Imprime un mensaje de despedida.
 		fmt.Println("Saliendo del sistema...")
-		// Finaliza la ejecución del programa con código de salida 0 (éxito).
 		os.Exit(0)
-	// Caso por defecto: Si la opción no coincide con ninguna de las anteriores.
 	default:
-		// Imprime un mensaje indicando que la opción no es válida.
 		fmt.Println("Opción no válida. Intente de nuevo.")
 	}
 }
 
 // Función que imprime las opciones del menú principal para usuarios logueados.
 func mostrarMenuPrincipal() {
-	// Imprime un encabezado personalizado con el nombre del usuario logueado.
 	fmt.Printf("\n--- Menú Principal (Usuario: %s) ---\n", usuarioActual)
-	// Imprime las opciones del menú principal.
 	fmt.Println("1. Mi Perfil")
 	fmt.Println("2. Explorar Contenido")
 	fmt.Println("3. Mi Lista")
@@ -108,36 +77,24 @@ func mostrarMenuPrincipal() {
 	fmt.Println("6. Gestionar Contenido (Admin)")
 	fmt.Println("7. Cerrar Sesión")
 	fmt.Println("8. Salir")
-	// Solicita al usuario que seleccione una opción.
 	fmt.Print("Seleccione una opción: ")
 }
 
-// Función que lee la entrada del usuario y la convierte a un número entero.
-// Devuelve la opción seleccionada o 0 si la entrada no es válida.
+// Lee la entrada del usuario y la convierte a un número entero.
 func leerOpcion() int {
-	// Lee la siguiente línea de texto desde stdin usando el scanner.
 	scanner.Scan()
-	// Obtiene el texto leído y elimina espacios en blanco al inicio y al final.
 	entrada := strings.TrimSpace(scanner.Text())
-	// Convierte la cadena de texto a un número entero.
-	// Atoi convierte de string a int.
 	opcion, err := strconv.Atoi(entrada)
-	// Verifica si ocurrió un error durante la conversión (por ejemplo, si la entrada no era un número).
 	if err != nil {
-		// Imprime un mensaje de error si la entrada no es un número válido.
 		fmt.Println("Entrada inválida. Por favor, ingrese un número.")
-		// Devuelve 0 para indicar que la entrada fue incorrecta.
-		return 0
+		return 0 // Indica entrada incorrecta.
 	}
-	// Devuelve el número entero correspondiente a la opción elegida.
 	return opcion
 }
 
 // Función que toma la opción elegida por el usuario logueado y llama a las funciones correspondientes.
 func ejecutarOpcionPrincipal(opcion int) {
-	// Utiliza una sentencia switch para evaluar el valor de 'opcion'.
 	switch opcion {
-	// Casos 1 a 8: Llama a las funciones correspondientes a cada opción del menú principal.
 	case 1:
 		miPerfil()
 	case 2:
@@ -155,382 +112,263 @@ func ejecutarOpcionPrincipal(opcion int) {
 	case 8:
 		fmt.Println("Saliendo del sistema...")
 		os.Exit(0)
-	// Caso por defecto: Si la opción no coincide con ninguna de las anteriores.
 	default:
-		// Imprime un mensaje indicando que la opción no es válida.
 		fmt.Println("Opción no válida. Intente de nuevo.")
 	}
 }
 
-// Función que maneja el inicio de sesión del usuario (simulación para AA1).
+// Maneja el inicio de sesión del usuario (simulación para AA1).
 func iniciarSesion() {
-	// Solicita al usuario que ingrese su nombre de usuario.
 	fmt.Print("Ingrese su nombre de usuario: ")
-	// Lee la siguiente línea de texto desde stdin.
 	scanner.Scan()
-	// Obtiene el texto leído y elimina espacios en blanco al inicio y al final.
 	usuario := strings.TrimSpace(scanner.Text())
 
-	// En AA1, no se implementa autenticación real con contraseñas ni verificación contra una base de datos.
-	// Simplemente se asume que el nombre de usuario es correcto y se asigna a la variable global 'usuarioActual'.
+	// Simulación de inicio de sesión: se asigna el nombre a la variable global.
 	usuarioActual = usuario
-	// Imprime un mensaje confirmando que la sesión se ha iniciado con el nombre proporcionado.
 	fmt.Printf("Sesión iniciada como: %s\n", usuarioActual)
 }
 
-// Función que maneja el registro de un nuevo usuario (funcionalidad de AA1).
+// Maneja el registro de un nuevo usuario (funcionalidad de AA1).
 func registrarse() {
-	// Solicita al usuario que ingrese su nombre.
 	fmt.Print("Ingrese el nombre del nuevo usuario (puede contener espacios): ")
-	// Lee la siguiente línea de texto desde stdin.
 	scanner.Scan()
-	// Obtiene el texto leído y elimina espacios en blanco al inicio y al final.
 	nombre := strings.TrimSpace(scanner.Text())
 
-	// Solicita al usuario que ingrese su email.
 	fmt.Print("Ingrese el email del nuevo usuario: ")
-	// Lee la siguiente línea de texto desde stdin.
 	scanner.Scan()
-	// Obtiene el texto leído y elimina espacios en blanco al inicio y al final.
 	email := strings.TrimSpace(scanner.Text())
 
-	// Verifica si el nombre o el email están vacíos.
 	if nombre == "" || email == "" {
-		// Imprime un mensaje de error si algún campo está vacío.
 		fmt.Println("Nombre y email no pueden estar vacíos.")
-		// Retorna de la función si los datos son inválidos.
 		return
 	}
 
-	// Llama a la función 'AgregarUsuario' del paquete 'users' para procesar los datos.
 	users.AgregarUsuario(nombre, email)
-	// Imprime un mensaje de confirmación.
 	fmt.Println("Usuario registrado exitosamente.")
 }
 
-// Función que maneja la visualización y edición del perfil del usuario (simulación para AA1).
+// Maneja la visualización y edición del perfil del usuario (simulación para AA1).
 func miPerfil() {
-	// Imprime un encabezado para la sección de perfil.
 	fmt.Println("\n--- Mi Perfil ---")
-	// Muestra el nombre de usuario actual.
 	fmt.Printf("Nombre de Usuario: %s\n", usuarioActual)
-	// Muestra un email simulado (ya que no se almacena en AA1).
 	fmt.Println("Email: usuario@ejemplo.com (Simulado)")
-	// Muestra un plan de suscripción simulado.
 	fmt.Println("Plan de Suscripción: Básico (Simulado)")
-	// Imprime opciones simuladas que no están implementadas en AA1.
 	fmt.Println("1. Editar Perfil (No implementado en AA1)")
 	fmt.Println("2. Configuración (No implementado en AA1)")
 	fmt.Println("3. Volver al Menú Principal")
-	// Solicita al usuario que seleccione una opción dentro de este submenú.
 	fmt.Print("Seleccione una opción: ")
 
-	// Lee la opción elegida dentro del submenú de perfil.
 	subOpcion := leerOpcion()
 
-	// Utiliza un switch para manejar la opción elegida en el submenú de perfil.
 	switch subOpcion {
-	// Casos 1 y 2: Editar Perfil y Configuración (simulados).
 	case 1, 2:
-		// Imprime un mensaje indicando que la funcionalidad no está disponible en AA1.
 		fmt.Println("Funcionalidad aún no implementada en AA1.")
-	// Caso 3: Volver al menú principal.
 	case 3:
-		// Retorna de la función, lo que lleva de vuelta al menú principal.
 		return
-	// Caso por defecto: Opción inválida en el submenú de perfil.
 	default:
-		// Imprime un mensaje de error para opción inválida.
 		fmt.Println("Opción no válida.")
 	}
 }
 
-// Función que maneja la visualización de la lista personal de favoritos (simulación para AA1).
+// Maneja la visualización de la lista personal de favoritos (simulación para AA1).
 func miLista() {
-	// Imprime un encabezado para la sección de lista personal.
 	fmt.Println("\n--- Mi Lista ---")
-	// Imprime un mensaje indicando que esta funcionalidad no está implementada en AA1.
 	fmt.Println("Funcionalidad de listas personales aún no implementada en AA1.")
 	fmt.Println("Aquí se mostrarían los ítems que el usuario marcó como 'Mi Lista'.")
 }
 
-// Función que maneja la visualización del historial de reproducción (simulación para AA1).
+// Maneja la visualización del historial de reproducción (simulación para AA1).
 func historialReproduccion() {
-	// Imprime un encabezado para la sección de historial.
 	fmt.Println("\n--- Historial de Reproducción ---")
-	// Imprime un mensaje indicando que esta funcionalidad no está implementada en AA1.
 	fmt.Println("Funcionalidad de historial de vistas/escuchas aún no implementada en AA1.")
 	fmt.Println("Aquí se mostrarían los ítems que el usuario ha reproducido.")
 }
 
-// Función que maneja las opciones del submenú de Usuarios (Admin).
+// Maneja las opciones del submenú de Usuarios (Admin).
 func gestionarUsuarios() {
-	// Imprime un encabezado para el submenú de gestión de usuarios.
 	fmt.Println("\n--- Gestión de Usuarios (Admin) ---")
-	// Imprime las opciones del submenú de gestión de usuarios.
 	fmt.Println("1. Agregar Usuario")
 	fmt.Println("2. Listar Usuarios")
 	fmt.Println("3. Volver al Menú Principal")
-	// Solicita al usuario que seleccione una opción dentro de este submenú.
 	fmt.Print("Seleccione una opción: ")
 
-	// Lee la opción elegida dentro del submenú de usuarios.
 	subOpcion := leerOpcion()
 
-	// Utiliza un switch para manejar la opción elegida en el submenú de usuarios.
 	switch subOpcion {
-	// Caso 1: Agregar un nuevo usuario.
 	case 1:
-		// Llama a la función para interactuar con el usuario y agregarlo.
 		agregarUsuario()
-	// Caso 2: Listar todos los usuarios registrados.
 	case 2:
-		// Llama a la función del paquete 'users' para listar usuarios.
 		users.ListarUsuarios()
-	// Caso 3: Volver al menú principal.
 	case 3:
-		// Retorna de la función, lo que lleva de vuelta al menú principal.
 		return
-	// Caso por defecto: Opción inválida en el submenú de usuarios.
 	default:
-		// Imprime un mensaje de error para opción inválida.
 		fmt.Println("Opción no válida para Usuarios.")
 	}
 }
 
-// Función que maneja las opciones del submenú de Contenido (Admin).
+// Maneja las opciones del submenú de Contenido (Admin).
 func gestionarContenido() {
-	// Imprime un encabezado para el submenú de gestión de contenido.
 	fmt.Println("\n--- Gestión de Contenido (Admin) ---")
-	// Imprime las opciones del submenú de gestión de contenido.
 	fmt.Println("1. Agregar Contenido")
 	fmt.Println("2. Listar Contenido")
 	fmt.Println("3. Calificar Contenido")
 	fmt.Println("4. Volver al Menú Principal")
-	// Solicita al usuario que seleccione una opción dentro de este submenú.
 	fmt.Print("Seleccione una opción: ")
 
-	// Lee la opción elegida dentro del submenú de contenido.
 	subOpcion := leerOpcion()
 
-	// Utiliza un switch para manejar la opción elegida en el submenú de contenido.
 	switch subOpcion {
-	// Caso 1: Agregar nuevo contenido.
 	case 1:
-		// Llama a la función para interactuar con el usuario y agregar contenido.
 		agregarContenido()
-	// Caso 2: Listar todo el contenido disponible.
 	case 2:
-		// Llama a la función del paquete 'content' para listar contenido.
 		content.ListarContenido()
-	// Caso 3: Calificar un contenido existente.
 	case 3:
-		// Llama a la función para calificar contenido.
 		calificarContenido()
-	// Caso 4: Volver al menú principal.
 	case 4:
-		// Retorna de la función, lo que lleva de vuelta al menú principal.
 		return
-	// Caso por defecto: Opción inválida en el submenú de contenido.
 	default:
-		// Imprime un mensaje de error para opción inválida.
 		fmt.Println("Opción no válida para Contenido.")
 	}
 }
 
-// Función que maneja las opciones del submenú de Explorar Contenido.
+// Maneja las opciones del submenú de Explorar Contenido.
 func explorarContenido() {
-	// Imprime un encabezado para el submenú de explorar contenido.
 	fmt.Println("\n--- Explorar Contenido ---")
-	// Imprime las opciones del submenú de explorar contenido.
 	fmt.Println("1. Ver Catálogo Completo")
 	fmt.Println("2. Ver Contenido por Género (Simulado)")
 	fmt.Println("3. Ver Contenido por Tipo (Simulado)")
 	fmt.Println("4. Buscar Contenido (Simulado)")
 	fmt.Println("5. Volver al Menú Principal")
-	// Solicita al usuario que seleccione una opción dentro de este submenú.
 	fmt.Print("Seleccione una opción: ")
 
-	// Lee la opción elegida dentro del submenú de explorar contenido.
 	subOpcion := leerOpcion()
 
-	// Utiliza un switch para manejar la opción elegida en el submenú de explorar contenido.
 	switch subOpcion {
-	// Caso 1: Ver el catálogo completo de contenido.
 	case 1:
-		// Llama a la función del paquete 'content' para listar contenido.
 		content.ListarContenido()
-	// Casos 2, 3, 4: Filtrado y búsqueda simulados (no implementados en AA1).
 	case 2:
 		fmt.Println("Funcionalidad de filtrado por género aún no implementada en AA1.")
 	case 3:
 		fmt.Println("Funcionalidad de filtrado por tipo aún no implementada en AA1.")
 	case 4:
 		fmt.Println("Funcionalidad de búsqueda por título aún no implementada en AA1.")
-	// Caso 5: Volver al menú principal.
 	case 5:
-		// Retorna de la función, lo que lleva de vuelta al menú principal.
 		return
-	// Caso por defecto: Opción inválida en el submenú de explorar contenido.
 	default:
-		// Imprime un mensaje de error para opción inválida.
 		fmt.Println("Opción no válida para Explorar Contenido.")
 	}
 }
 
-// Función que cierra la sesión del usuario actual.
+// Cierra la sesión del usuario actual.
 func cerrarSesion() {
-	// Imprime un mensaje confirmando que se está cerrando la sesión.
 	fmt.Printf("Cerrando sesión de %s...\n", usuarioActual)
-	// Limpia la variable global 'usuarioActual', indicando que no hay sesión activa.
 	usuarioActual = ""
 }
 
-// Función que interactúa con el usuario para obtener datos y llama a la función del paquete users para agregarlo.
+// Interactúa con el usuario para obtener datos y llama a la función del paquete users para agregarlo.
 func agregarUsuario() {
-	// Solicita al usuario que ingrese su nombre.
 	fmt.Print("Ingrese el nombre del nuevo usuario (puede contener espacios): ")
-	// Lee la siguiente línea de texto desde stdin.
 	scanner.Scan()
-	// Obtiene el texto leído y elimina espacios en blanco al inicio y al final.
 	nombre := strings.TrimSpace(scanner.Text())
 
-	// Solicita al usuario que ingrese su email.
 	fmt.Print("Ingrese el email del nuevo usuario: ")
-	// Lee la siguiente línea de texto desde stdin.
 	scanner.Scan()
-	// Obtiene el texto leído y elimina espacios en blanco al inicio y al final.
 	email := strings.TrimSpace(scanner.Text())
 
-	// Verifica si el nombre o el email están vacíos.
 	if nombre == "" || email == "" {
-		// Imprime un mensaje de error si algún campo está vacío.
 		fmt.Println("Nombre y email no pueden estar vacíos.")
-		// Retorna de la función si los datos son inválidos.
 		return
 	}
 
-	// Llama a la función 'AgregarUsuario' del paquete 'users' para procesar los datos.
 	users.AgregarUsuario(nombre, email)
-	// Imprime un mensaje de confirmación.
 	fmt.Println("Usuario agregado exitosamente.")
 }
 
-// Función que interactúa con el usuario para obtener datos y llama a la función del paquete content para agregarlo.
+// Interactúa con el usuario para obtener datos y llama a la función del paquete content para agregarlo.
 func agregarContenido() {
-	// Solicita al usuario que ingrese el título del contenido.
 	fmt.Print("Ingrese el título del contenido (puede contener espacios): ")
-	// Lee la siguiente línea de texto desde stdin.
 	scanner.Scan()
-	// Obtiene el texto leído y elimina espacios en blanco al inicio y al final.
 	titulo := strings.TrimSpace(scanner.Text())
 
-	// Muestra las opciones de tipo de contenido.
 	fmt.Println("Tipos de contenido: 1. Audiovisual, 2. Audio (Podcast)")
-	// Solicita al usuario que seleccione el tipo.
 	fmt.Print("Seleccione el tipo (1 o 2): ")
-	// Lee la opción elegida para el tipo de contenido.
 	tipoInput := leerOpcion()
-	// Declara una variable para almacenar el tipo de contenido como string.
 	var tipo string
-	// Utiliza un switch para asignar el valor correcto a 'tipo' según la opción elegida.
 	switch tipoInput {
-	// Caso 1: Audiovisual.
 	case 1:
-		// Asigna "Audiovisual" a la variable tipo.
 		tipo = "Audiovisual"
-	// Caso 2: Audio.
 	case 2:
-		// Asigna "Audio" a la variable tipo.
 		tipo = "Audio"
-	// Caso por defecto: Opción inválida.
 	default:
-		// Imprime un mensaje de error si la opción de tipo es inválida.
 		fmt.Println("Opción de tipo inválida.")
-		// Retorna de la función si la opción es inválida.
 		return
 	}
 
-	// Solicita al usuario que ingrese la duración del contenido.
 	fmt.Print("Ingrese la duración del contenido (en minutos, solo número): ")
-	// Lee la siguiente línea de texto desde stdin.
 	scanner.Scan()
-	// Obtiene el texto leído y elimina espacios en blanco al inicio y al final.
 	duracionStr := strings.TrimSpace(scanner.Text())
-	// Convierte la cadena de texto de la duración a un número entero.
 	duracion, err := strconv.Atoi(duracionStr)
-	// Verifica si ocurrió un error durante la conversión de la duración.
 	if err != nil {
-		// Imprime un mensaje de error si la duración no es un número válido.
 		fmt.Println("Duración inválida. Debe ser un número.")
-		// Retorna de la función si la duración es inválida.
 		return
 	}
 
-	// Verifica si el título está vacío.
 	if titulo == "" {
-		// Imprime un mensaje de error si el título está vacío.
 		fmt.Println("El título no puede estar vacío.")
-		// Retorna de la función si el título es inválido.
 		return
 	}
 
-	// Llama a la función 'AgregarContenido' del paquete 'content' para procesar los datos.
 	content.AgregarContenido(titulo, tipo, duracion)
-	// Imprime un mensaje de confirmación.
 	fmt.Println("Contenido agregado exitosamente.")
 }
 
-// Función que interactúa con el usuario para obtener ID de contenido, ID de usuario y calificación, y llama a la función del paquete content.
-// Ahora usa el ID del usuario actual logueado, simulado a partir del nombre.
+// Interactúa con el usuario para obtener ID de contenido, ID de usuario y calificación, y llama a la función del paquete content.
+// Ahora usa el ID del usuario actual logueado.
 func calificarContenido() {
-	// Muestra la lista de contenido para que el usuario elija.
 	content.ListarContenido()
-	// Solicita al usuario que ingrese el ID del contenido a calificar.
 	fmt.Print("Ingrese el ID del contenido que desea calificar: ")
-	// Lee la siguiente línea de texto desde stdin.
 	scanner.Scan()
-	// Obtiene el texto leído (el ID como string) y elimina espacios en blanco al inicio y al final.
 	contentIDStr := strings.TrimSpace(scanner.Text())
-	// Convierte la cadena de texto del ID del contenido a un número entero.
 	contentID, err := strconv.Atoi(contentIDStr)
-	// Verifica si ocurrió un error durante la conversión del ID del contenido.
 	if err != nil {
-		// Imprime un mensaje de error si el ID del contenido no es válido.
 		fmt.Println("ID de contenido inválido.")
-		// Retorna de la función si el ID es inválido.
 		return
 	}
 
-	// En AA1, simulamos un ID de usuario basado en el nombre de usuario actual.
-	// Esto es una simplificación, ya que en AA2 se usaría un ID numérico real almacenado.
-	// Calculamos un ID numérico simple sumando los valores ASCII de los caracteres del nombre de usuario.
+	// Simulamos un ID de usuario basado en el nombre de usuario actual.
 	userID := 0
-	// Itera sobre cada carácter (rune) en el nombre de usuario.
 	for _, char := range usuarioActual {
-		// Suma el valor numérico (ASCII) del carácter al userID.
 		userID += int(char)
 	}
-	// Si el nombre de usuario es vacío (aunque no debería ser el caso aquí), asigna un ID por defecto.
 	if userID == 0 {
 		userID = 999
 	}
 
-	// Solicita al usuario que ingrese la calificación (puede usar punto o coma).
 	fmt.Print("Ingrese la calificación (1.0 a 10.0, ej: 7.5 o 7,5): ")
-	// Lee la siguiente línea de texto desde stdin.
 	scanner.Scan()
-	// Obtiene el texto leído (la calificación como string) y elimina espacios en blanco al inicio y al final.
 	ratingStr := strings.TrimSpace(scanner.Text())
 
-	// Llama a la función 'CalificarContenido' del paquete 'content' para procesar los datos.
 	err = content.CalificarContenido(contentID, userID, ratingStr)
-	// Verifica si ocurrió un error durante el proceso de calificación.
 	if err != nil {
-		// Imprime un mensaje de error con los detalles del problema.
 		fmt.Printf("Error al calificar: %v\n", err)
 	} else {
-		// Si no hubo error, imprime un mensaje de confirmación que incluye el nombre y ID del usuario que calificó.
 		fmt.Printf("Usuario '%s' (ID: %d) ha calificado el contenido.\n", usuarioActual, userID)
+	}
+}
+
+// Ejemplo de función anónima utilizada como callback para mostrar un mensaje de bienvenida personalizado.
+// Esta función se define dentro de main y se llama inmediatamente.
+func ejemploFuncionAnonima() {
+	bienvenida := func(nombre string) {
+		fmt.Printf("¡Hola %s, bienvenido a SDGEStreaming!\n", nombre)
+	}
+	bienvenida(usuarioActual)
+}
+
+// Ejemplo de función variádica que imprime una lista de opciones del menú principal.
+// Recibe un número variable de strings (opciones).
+func imprimirOpciones(opciones ...string) {
+	for i, opcion := range opciones {
+		fmt.Printf("%d. %s\n", i+1, opcion)
 	}
 }
