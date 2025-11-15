@@ -58,7 +58,6 @@ func showAuthMenu() {
         {"2", "Registrarse"},
         {"3", "Explorar como Invitado"},
         {"4", "Salir"},
-        {"?", "Ayuda"},
     }
     
     option := cli.ShowMenu("Bienvenido a SDGEStreaming", items)
@@ -79,8 +78,6 @@ func showAuthMenu() {
             cli.ShowGoodbye("Invitado", true)
         }
         os.Exit(0)
-    case "?":
-        cli.ShowHelp("inicio")
     default:
         if option != "" {
             cli.PrintError("Opción inválida. Por favor seleccione una opción del menú.")

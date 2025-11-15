@@ -1,6 +1,6 @@
 package categories
 
-import "time"  // Agrega esta línea al inicio del archivo
+import "time"
 
 // Estructuras comunes para todo el sistema
 type UserRating struct {
