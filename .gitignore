@@ -39,4 +39,3 @@ config/*.yaml
 # Archivos del sistema operativo
 # -----------------------------------
 .DS_Store
-Thumbs.db

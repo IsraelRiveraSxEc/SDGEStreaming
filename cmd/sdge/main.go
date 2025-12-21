@@ -1,6 +1,6 @@
 /* @Programa principal del proyecto SDGEStreaming - Programación orientada a objetos
    @Autores: Nelson Espinosa, Barbara Peñaherrera
-   @Domingo 7 de diciembre de 2025. Quito - Ecuador
+   @Domingo 21 de diciembre de 2025. Quito - Ecuador
    @Punto de entrada del sistema. Contiene el menú interactivo y la lógica de control principal que orquesta las interacciones con los módulos y la base de datos.*/
 // cmd/sdge/main.go
 package main
